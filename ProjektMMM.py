@@ -22,7 +22,7 @@ class układ:
     def wyjście(uklad):
         uklad.Y = (-1*uklad.U*uklad.R)/(uklad.R + uklad.R+ s*uklad.R*uklad.R2*uklad.C)
         
-
+#zastanawiam się, czy nie trzeba by zamiast s od razu napisać jw
 
 
 uklad = układ()
