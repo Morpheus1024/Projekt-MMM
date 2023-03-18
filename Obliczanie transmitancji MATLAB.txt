@@ -1,0 +1,63 @@
+>> syms s U R R2 L C Y
+>> Zr = R
+ 
+Zr =
+ 
+R
+ 
+>> Zl = s*L
+ 
+Zl =
+ 
+L*s
+ 
+
+>> Zc = 1/(s*C)
+ 
+Zc =
+ 
+1/(C*s)
+ 
+>> Zr2 = R2
+ 
+Zr2 =
+ 
+R2
+ 
+>> Zrc = (Zr*Zc)/(Zr+Zc)
+ 
+Zrc =
+ 
+R/(C*s*(R + 1/(C*s)))
+ 
+>> pretty(Zrc)
+       R
+---------------
+    /      1  \
+C s | R + --- |
+    \     C s /
+
+>> pretty(simplifyFraction(Zrc))
+    R
+---------
+C R s + 1
+
+>> Ur = -(U*Zrc)/(Zrc+Zr2)
+ 
+Ur =
+ 
+-(R*U)/(C*s*(R + 1/(C*s))*(R2 + R/(C*s*(R + 1/(C*s)))))
+ 
+>> pretty(Ur)
+                     R U
+- ----------------------------------------
+      /      1  \ /             R        \
+  C s | R + --- | | R2 + --------------- |
+      \     C s / |          /      1  \ |
+                  |      C s | R + --- | |
+                  \          \     C s / /
+
+>> pretty(simplifyFraction(Ur))
+         R U
+- -----------------
+  R + R2 + C R R2 s
