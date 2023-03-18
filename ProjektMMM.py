@@ -1,7 +1,6 @@
 import sympy
 sympy.init_printing()
 
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -9,21 +8,22 @@ t, s = sympy.symbols('t, s')
 
 
 
-class układ:
-    def __init__(self):
-        self.R = 0
-        self.L = 0
-        self.R2 = 0
-        self.C = 0
-        self.U = 0
+class Układ:
+    def __init__(self, R, R2, L, U, C):
+        self.R = R
+        self.L = L
+        self.R2 = R2
+        self.C = C
+        self.U = U
         self.Y = 0
         #zerowe warunki początkowe
 
-    def wyjście(uklad):
-        uklad.Y = (-1*uklad.U*uklad.R)/(uklad.R + uklad.R+ s*uklad.R*uklad.R2*uklad.C)
+    def wyjście(self):
+        self.Y = (-1*self.U*self.R)/(self.R + self.R+ s*self.R*self.R2*self.C)
         
 #zastanawiam się, czy nie trzeba by zamiast s od razu napisać jw
 
+#w tym miejscu będzie pobieranie od użytkownika wartości R R2 C L U
 
-uklad = układ()
+uklad = Układ(R, R2, L, U, C)
     
