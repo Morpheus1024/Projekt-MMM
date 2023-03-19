@@ -1,10 +1,16 @@
 import sympy
 sympy.init_printing()
 
+t, s= sympy.symbols('t, s')
+
+#https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.bode.html
+
 import matplotlib.pyplot as plt
 import numpy as np
 
-t, s = sympy.symbols('t, s')
+from spicy import signal
+
+
 
 
 
@@ -15,13 +21,24 @@ class Układ:
         self.R2 = R2
         self.C = C
         self.U = U
-        self.Y = 0
+        self.P
+        self.Q
+        self.Y_string=''
+        self.transmitancja =' Y/U = -R/(R+R2+sRCR2)'
         #zerowe warunki początkowe
 
     def wyjście(self):
-        self.Y = (-1*self.U*self.R)/(self.R + self.R+ s*self.R*self.R2*self.C)
+        self.P = -(self.R*(self.R + self.R2))/((self.R+self.R2)**2+(sympy.w*self.R*self.R2*self.C)**2)
+        self.Q = (sympy.w*self.R*self.R2*self.C)/((self.R+self.R2)**2+(sympy.w*self.R*self.R2*self.C)**2)
+
+        self.Y_string = "("+self.P.toString()+")" + "j*("*self.Q+")"
+
+    def bode(self):
+        #sys = signal.TransferFunction()
+
         
-#zastanawiam się, czy nie trzeba by zamiast s od razu napisać jw
+        
+#zastanawiam się, czy nie trzeba by zamiast s od razu napisać jw - w sumie zrobiłem to XD
 
 #w tym miejscu będzie pobieranie od użytkownika wartości R R2 C L U
 
