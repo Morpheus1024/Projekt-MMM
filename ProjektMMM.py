@@ -1,18 +1,16 @@
 import sympy
 sympy.init_printing()
 
-t, s= sympy.symbols('t, s')
+t, s, f= sympy.symbols('t, s, f')
 
 #https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.bode.html
 
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import numpy as np
 
 from spicy import signal
 
-
-
-
+w = 2* np.pi * f
 
 class Układ:
     def __init__(self, R, R2, L, U, C):
@@ -31,10 +29,10 @@ class Układ:
         self.P = -(self.R*(self.R + self.R2))/((self.R+self.R2)**2+(sympy.w*self.R*self.R2*self.C)**2)
         self.Q = (sympy.w*self.R*self.R2*self.C)/((self.R+self.R2)**2+(sympy.w*self.R*self.R2*self.C)**2)
 
-        self.Y_string = "("+self.P.toString()+")" + "j*("*self.Q+")"
+        self.Y_string = "("+self.P+")" + "j*("*self.Q+")"
 
     def bode(self):
-        #sys = signal.TransferFunction()
+        sys = signal.TransferFunction()
 
         
         
@@ -42,5 +40,5 @@ class Układ:
 
 #w tym miejscu będzie pobieranie od użytkownika wartości R R2 C L U
 
-uklad = Układ(R, R2, L, U, C)
+#uklad = Układ(R, R2, L, U, C)
     
