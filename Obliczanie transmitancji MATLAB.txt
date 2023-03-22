@@ -61,3 +61,29 @@ Ur =
          R U
 - -----------------
   R + R2 + C R R2 s
+  
+  
+  
+  
+  
+  
+ >> ilaplace(G*1)%odp impulsowa
+ 
+ans =
+ 
+-exp(-(t*(R + R2))/(C*R*R2))/(C*R2)
+ 
+>> ilaplace(G/s)%odp skokowa
+ 
+ans =
+ 
+(R*exp(-(t*(R + R2))/(C*R*R2)))/(R + R2) - R/(R + R2)
+ 
+>> ilaplace(G/s^2)%odp na rampę
+ 
+ans =
+ 
+(C*R^2*R2)/(R + R2)^2 - (R*t)/(R + R2) - (C*R^2*R2*exp(-(t*(R + R2))/(C*R*R2)))/(R + R2)^2
+ 
+>> 
+
