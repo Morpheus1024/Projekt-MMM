@@ -1,18 +1,38 @@
-from pylab import *
+from scipy import signal
+
+import matplotlib.pyplot as plt
+
+import sympy
+
+'''
+todo
+
+pobudzenie prostokątem o skończonym czasie trwania
+pobudzenie trójkątem
+pobudzenie sygnałem harmonicznym
+wyświetlanie wejścia i wyjścia jako przebieg czasowy
+coś nowego jeszcze coś dopisuję
+
+-- char. f. bodego
+
+'''
 
 class Układ:
-    def __init__(self, wektor_wejścia):
-        self.lista_IN = wektor_wejścia #[R, L, R2, C, U]
-        self.R = self.lista_IN[0]
-        self.L = self.lista_IN[1]
-        self.R2 = self.lista_IN[2]
-        self.C = self.lista_IN[3]
-        self.U = self.lista_IN[4]
+    def __init__(self, lista_IN):
+        #lista_IN = wektor_wejścia #[R, L, R2, C, U]
+        
+        self.R = lista_IN[0]
+        self.L = lista_IN[1]
+        self.R2 = lista_IN[2]
+        self.C = lista_IN[3]
+        self.U = lista_IN[4]
         self.biegun = None
         #self.P = None
         #self.Q = None
         self.Y_string=''
         self.transmitancja =' Y/U = -R/(R+R2+sRCR2)'
+
+        
         
         #zerowe warunki początkowe
 
@@ -20,44 +40,36 @@ class Układ:
         self.biegun = -(self.R+self.R2)/(self.R*self.R2*self.C)
         return self.biegun
 
-    def moduł(self, w):
-        self.P = -(self.R*(self.R + self.R2))/((self.R+self.R2)**2+(w*self.R*self.R2*self.C)**2)
-        self.Q = (w*self.R*self.R2*self.C)/((self.R+self.R2)**2+(w*self.R*self.R2*self.C)**2)
-        return sqrt(self.P**2+self.Q**2)
+    def bode(self):
+        self.sys = signal.TransferFunction([self.R], [self.R*self.R2*self.C, self.R+self.R2])
+        w, mag, phase = signal.bode(self.sys)
+        plt.figure()
+        plt.semilogx(w, mag)    # Bode magnitude plot
+        plt.figure()
+        plt.semilogx(w, phase)  # Bode phase plot
+        plt.show()
 
-    def faza(self, w):
-        self.P = -(self.R*(self.R + self.R2))/((self.R+self.R2)**2+(w*self.R*self.R2*self.C)**2)
-        self.Q = (w*self.R*self.R2*self.C)/((self.R+self.R2)**2+(w*self.R*self.R2*self.C)**2)
-        return arctan(self.Q/self.P)
+    def odp_harmoniczna(self, IN):
+        #IN = [A,w]
+        A = IN[0]
+        w = IN[1]
+        #Y = A*R^2*sin(t*w) + A*R*R2*sin(t*w) - A*C*R^2*R2*w*cos(t*w))/(C^2*R^2*R2^2*w^2 + R^2 + 2*R*R2 + R2^2) + (A*C*R^2*R2*w*exp(-(t*(R + R2))/(C*R*R2)))/(C^2*R^2*R2^2*w^2 + R^2 + 2*R*R2 + R2^2)
+        #odp_harm (exp(-(t*(R + R2))/(C*R*R2))*(A*R^2*exp((t*(R + R2))/(C*R*R2))*sin(t*w) + A*R*R2*exp((t*(R + R2))/(C*R*R2))*sin(t*w) + A*C*R^2*R2*w - A*C*R^2*R2*w*exp((t*(R + R2))/(C*R*R2))*cos(t*w)))/(C^2*R^2*R2^2*w^2 + R^2 + 2*R*R2 + R2^2)
+        R = self.R
+        R2 = self.R2
+        C = self.C
 
-    #def moduł(self,w):
-     # return(self.P+j*self.Q) 
-
-
-    
-#def H(w):
-    #wc = 4000*pi
-    #return 1.0 / (1.0 + 1j * w / wc)
-  
-
-#f = logspace(1,5) # frequencies from 10**1 to 10**5
-#plot(f, 20*log10(abs(H(2*pi*f)))); xscale('log')
-print('siema') 
+        https://realpython.com/python-matplotlib-guide/
 
 
 
-############################################################################
-
-
-RLC = [1,1,1,1,1] #R, L, R2, C, U
+RLC = [10,1,15,20,1] #R, L, R2, C, U
 
 uklad = Układ(RLC)
 
-f = logspace(0,10)
+uklad.bode()
 
-plot(f, 20*log10(abs(uklad.moduł(2*pi*f)))); xscale('log')
+###################################################
 
-plot(f, 20*log10(abs(uklad.faza(2*pi*f)))); xscale('log')
-#plot(f, 20*log10(abs(uklad.wyjście_Q(2*pi*f)))); xscale('log')
-#print('faza')
-#plot (f, arg(uklad.wyjście_P(2*pi*f))); xscale('log')
+#sys = signal.TransferFunction([1], [1, 2])  
+#https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.bode.html
