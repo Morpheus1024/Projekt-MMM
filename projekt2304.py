@@ -88,7 +88,7 @@ class Uklad:
         IN1 = A * signal.square(w * t) #prostokatny
         IN2 = A * signal.sawtooth(w * t, 0.5)  # 0,5 daje trójkątny, 1 dawało by piłokształtny
         IN3 = A * np.sin(t)
-
+    
         plt3 = plt.subplot(222)
         plt.plot(t, IN1) #tutaj zrobimy zmiane ktorego IN wybieramy
         plt3.set_title('IN') #nazwa
@@ -112,7 +112,7 @@ RLC = [10, 1, 15, 20, 1]  # R, L, R2, C, U
 uklad = Uklad(RLC)
 
 uklad.bode()
-uklad.sygnal(20, 2, 1)
+uklad.sygnal(20, 2, 1) #t,A,w
 plt.show()
 
 print("kompilacja udana")
