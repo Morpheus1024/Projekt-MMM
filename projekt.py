@@ -35,7 +35,7 @@ class Uklad:
         t = np.arange(0, time, dt)  
         IN1 = A * signal.square(w * t) 
         IN2 = A * signal.sawtooth(w * t, 0.5)  
-        IN3 = A * np.sin(t)
+        IN3 = A * np.sin(w*t)
         IN = IN3
         plt3 = plt.subplot(222)
         plt.plot(t, IN) 

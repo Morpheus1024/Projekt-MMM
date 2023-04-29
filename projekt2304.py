@@ -78,7 +78,7 @@ class Uklad:
         # plt.figure()
         IN1 = A * signal.square(w * t) #prostokatny
         IN2 = A * signal.sawtooth(w * t, 0.5)  # 0,5 daje trójkątny, 1 dawało by piłokształtny
-        IN3 = A * np.sin(t)
+        IN3 = A * np.sin(w*t)
         IN = IN3
         plt3 = plt.subplot(222)
         plt.plot(t, IN) #tutaj zrobimy zmiane ktorego IN wybieramy
