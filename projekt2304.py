@@ -2,6 +2,7 @@ from cgitb import reset
 
 from scipy import signal
 import numpy as np
+from numpy import exp as exp
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, Button
 
@@ -71,29 +72,23 @@ class Uklad:
         #plt2.plot(data=plt.semilogx(w, mag), marker='o')
         #plt2.set_title('Magnitude')
 
-        # def odp_harmoniczna(self, A, w):
-        # IN = [A,w]
 
-        # Y = A*R^2*sin(t*w) + A*R*R2*sin(t*w) - A*C*R^2*R2*w*cos(t*w))/(C^2*R^2*R2^2*w^2 + R^2 + 2*R*R2 + R2^2) + (A*C*R^2*R2*w*exp(-(t*(R + R2))/(C*R*R2)))/(C^2*R^2*R2^2*w^2 + R^2 + 2*R*R2 + R2^2)
-        # odp_harm (exp(-(t*(R + R2))/(C*R*R2))*(A*R^2*exp((t*(R + R2))/(C*R*R2))*sin(t*w) + A*R*R2*exp((t*(R + R2))/(C*R*R2))*sin(t*w) + A*C*R^2*R2*w - A*C*R^2*R2*w*exp((t*(R + R2))/(C*R*R2))*cos(t*w)))/(C^2*R^2*R2^2*w^2 + R^2 + 2*R*R2 + R2^2)
-        # mnożenie w dzieninie s to to samo co splot w dziedzinie t - numpy.convolution
-        # R = self.R
-        # R2 = self.R2
-        # C = self.C
-
-    def sygnal(self, time, A, w):
-        t = np.arange(0, time, 0.1)  # start, stop, step
+    def sygnal(self, time, A, w, dt):
+        t = np.arange(0, time, dt)  # start, stop, step
         # plt.plot(t, signal.square(w*t))
         # plt.figure()
         IN1 = A * signal.square(w * t) #prostokatny
         IN2 = A * signal.sawtooth(w * t, 0.5)  # 0,5 daje trójkątny, 1 dawało by piłokształtny
         IN3 = A * np.sin(t)
-    
+        IN = IN3
         plt3 = plt.subplot(222)
-        plt.plot(t, IN1) #tutaj zrobimy zmiane ktorego IN wybieramy
+        plt.plot(t, IN) #tutaj zrobimy zmiane ktorego IN wybieramy
         plt3.set_title('IN') #nazwa
         plt.tight_layout() #to oddala od siebie wykresy zeby nic na siebie nie nachodzilo
 
+        ##tutaj niech będą ify decydujace o wyjściu
+        
+        return IN
         #sygnal wsadzilem do jednej def z tego wzgledu ze nie robimy 3 razy tych samych rzeczy tylko raz, wywolywanie bedzie polegalo na zmianie
         #ktorego wejscia chcemy uzyc wiec w sumie podobnie ale szybciej mysle
         #jedynym problemem teraz jest umieszczenie buttonow i suwakow poniewaz to co wtedy bylo wykorzystuje troche inne metody ktore codziennie
@@ -104,18 +99,34 @@ class Uklad:
         #plt3.set_title('IN')
         #plt.tight_layout()
 
-        return IN1
+        #return IN1
+    
+    def wyjscie(self, time, IN, dt):
+        t = np.arange(0, time, dt)
+        OUT = IN* ((self.R*exp(-(t*(self.R + self.R2))/(self.C*self.R*self.R2)))/(self.R + self.R2) - self.R/(self.R + self.R2))
+        # oryginał transmitancji: (R*exp(-(t*(R + R2))/(C*R*R2)))/(R + R2) - R/(R + R2)
+        plt4 = plt.subplot(224)
+        plt.plot(t, OUT)
+        plt4.set_title('OUT')
+        plt.tight_layout() #to oddala od siebie wykresy zeby nic na siebie nie nachodzilo
+
+
+###################################################
 
 
 RLC = [10, 1, 15, 20, 1]  # R, L, R2, C, U
-
+time = 1000
+dt = 0.25
+A = 2
+w = 1
 uklad = Uklad(RLC)
 
 uklad.bode()
-uklad.sygnal(20, 2, 1) #t,A,w
+IN = uklad.sygnal(time, A, w, dt) 
+uklad.wyjscie(time, IN, dt)
 plt.show()
 
-print("kompilacja udana")
+#print("kompilacja udana")
 
 ###################################################
 
