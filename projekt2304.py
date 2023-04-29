@@ -102,10 +102,11 @@ class Uklad:
     
     def wyjscie(self, time, IN, dt):
         t = np.arange(0, time, dt)
-        OUT = IN* ((self.R*exp(-(t*(self.R + self.R2))/(self.C*self.R*self.R2)))/(self.R + self.R2) - self.R/(self.R + self.R2))
+        OUT = np.convolve(IN,(self.R*exp(-(t*(self.R + self.R2))/(self.C*self.R*self.R2)))/(self.R + self.R2) - self.R/(self.R + self.R2))
+        #print(OUT)
         # oryginał transmitancji: (R*exp(-(t*(R + R2))/(C*R*R2)))/(R + R2) - R/(R + R2)
         plt4 = plt.subplot(224)
-        plt.plot(t, OUT)
+        plt.plot(OUT)
         plt4.set_title('OUT')
         plt.tight_layout() #to oddala od siebie wykresy zeby nic na siebie nie nachodzilo
 
@@ -114,7 +115,7 @@ class Uklad:
 
 
 RLC = [10, 1, 15, 20, 1]  # R, L, R2, C, U
-time = 1000
+time = 100
 dt = 0.25
 A = 2
 w = 1
