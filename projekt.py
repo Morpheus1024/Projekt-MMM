@@ -5,6 +5,26 @@ from numpy import exp as exp
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, Button
 
+'''
+todo
+sprawdzić czym są w mag i
+radiobuttony
+pola tekstowe dla w, dt, t
+
+
+
+
+
+--wyświetlanie wejścia i wyjścia jako przebieg czasowy
+-- pobudzenie sygnałem harmonicznym
+-- pobudzenie trójkątem
+-- pobudzenie prostokątem o skończonym czasie trwania
+-- wyznaczanie punkt po punkcie kolejnych współrzędnych i zapisywanie ich do tablicy - tatarowy "mały dt"
+-- char. f. bodego
+
+
+'''
+
 class Uklad:
 
     def __init__(self, lista_IN):
@@ -46,7 +66,8 @@ class Uklad:
     
     def wyjscie(self, time, IN, dt):
         t = np.arange(0, time, dt)
-        OUT = np.convolve(IN,(self.R*exp(-(t*(self.R + self.R2))/(self.C*self.R*self.R2)))/(self.R + self.R2) - self.R/(self.R + self.R2))
+        oryginal_transmitancji = self.R*exp(-(t*(self.R + self.R2))/(self.C*self.R*self.R2))/(self.R + self.R2) - self.R/(self.R + self.R2)
+        OUT = np.convolve(IN,oryginal_transmitancji)
         plt4 = plt.subplot(224)
         plt.plot(OUT)
         plt4.set_title('OUT')
