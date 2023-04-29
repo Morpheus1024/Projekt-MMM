@@ -36,7 +36,7 @@ class Uklad:
         IN1 = A * signal.square(w * t) 
         IN2 = A * signal.sawtooth(w * t, 0.5)  
         IN3 = A * np.sin(w*t)
-        IN = IN3
+        IN = IN1
         plt3 = plt.subplot(222)
         plt.plot(t, IN) 
         plt3.set_title('IN') 
@@ -46,10 +46,9 @@ class Uklad:
     
     def wyjscie(self, time, IN, dt):
         t = np.arange(0, time, dt)
-        OUT = IN* ((self.R*exp(-(t*(self.R + self.R2))/(self.C*self.R*self.R2)))/(self.R + self.R2) - self.R/(self.R + self.R2))
-        # oryginał transmitancji: (R*exp(-(t*(R + R2))/(C*R*R2)))/(R + R2) - R/(R + R2)
+        OUT = np.convolve(IN,(self.R*exp(-(t*(self.R + self.R2))/(self.C*self.R*self.R2)))/(self.R + self.R2) - self.R/(self.R + self.R2))
         plt4 = plt.subplot(224)
-        plt.plot(t, OUT)
+        plt.plot(OUT)
         plt4.set_title('OUT')
         plt.tight_layout() 
 
