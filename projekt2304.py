@@ -102,13 +102,12 @@ class Uklad:
     
     def wyjscie(self, time, IN, dt):
         t = np.arange(0, time, dt)
-        OUT = np.convolve(IN,(self.R*exp(-(t*(self.R + self.R2))/(self.C*self.R*self.R2)))/(self.R + self.R2) - self.R/(self.R + self.R2))
-        #print(OUT)
-        # oryginał transmitancji: (R*exp(-(t*(R + R2))/(C*R*R2)))/(R + R2) - R/(R + R2)
+        oryginal_transmitancji = self.R*exp(-(t*(self.R + self.R2))/(self.C*self.R*self.R2))/(self.R + self.R2) - self.R/(self.R + self.R2)
+        OUT = np.convolve(IN,oryginal_transmitancji)
         plt4 = plt.subplot(224)
-        plt.plot(OUT)
+        plt.plot(0)
         plt4.set_title('OUT')
-        plt.tight_layout() #to oddala od siebie wykresy zeby nic na siebie nie nachodzilo
+        plt.tight_layout() 
 
 
 ###################################################
