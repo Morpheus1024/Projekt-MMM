@@ -14,8 +14,6 @@ class Uklad:
         self.C = lista_IN[3]
         self.U = lista_IN[4]
         self.biegun = None
-        self.Y_string = ''
-        self.transmitancja = ' Y/U = -R/(R+R2+sRCR2)'
 
     def biegun(self):
         self.biegun = -(self.R + self.R2) / (self.R * self.R2 * self.C)
@@ -58,8 +56,8 @@ class Uklad:
 
 ###################################################
 RLC = [10, 1, 15, 20, 1]  # R, L, R2, C, U
-time = 1000
-dt = 0.25
+time = 250
+dt = 0.1
 A = 2
 w = 1
 uklad = Uklad(RLC)
