@@ -1,5 +1,4 @@
 from cgitb import reset
-
 from scipy import signal
 import numpy as np
 from numpy import exp as exp
