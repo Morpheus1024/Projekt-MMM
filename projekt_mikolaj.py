@@ -103,7 +103,6 @@ w = 1
 uklad = Uklad(RLC)
 
 uklad.bode()
-
 IN = uklad.sygnal(time, A, w, dt) 
 uklad.wyjscie(time, IN, dt)
 plt.show()
