@@ -3,7 +3,7 @@ from scipy import signal
 import numpy as np
 from numpy import exp as exp
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Slider, Button, RadioButtons
+from matplotlib.widgets import Slider, Button, RadioButtons, TextBox
 
 '''
 todo
@@ -51,8 +51,24 @@ class Uklad:
         plt.semilogx(w, mag) 
         plt.tight_layout()
 
+    def textboxy(self):
+        A_box =plt.axes([0.1, 0.51, 0.2, 0.1])
+        w_box =plt.axes([0.1, 0.40, 0.2, 0.1])
+        dt_box =plt.axes([0.1, 0.29, 0.2, 0.1])
+        time_box =plt.axes([0.1, 0.17, 0.2, 0.1])
+
+        A_textbox = TextBox(A_box, "A:", textalignment="center")
+        w_textbox = TextBox(w_box, "w:", textalignment="center")
+        dt_textbox = TextBox(dt_box, "dt:", textalignment="center")
+        time_textbox = TextBox(time_box, "time:", textalignment="center")
+
+
     def sygnal(self, time, A, w, dt):
+        
+        uklad.textboxy()
         # left, bottom, width, height values
+        
+
         rax = plt.axes([0.02, 0.65, 0.28, 0.18])
         radio_button = RadioButtons(rax, ('Syg. Prostokątny','Syg. Trójkątny','Syg. harmoniczny'))
 
@@ -87,6 +103,7 @@ w = 1
 uklad = Uklad(RLC)
 
 uklad.bode()
+
 IN = uklad.sygnal(time, A, w, dt) 
 uklad.wyjscie(time, IN, dt)
 plt.show()
