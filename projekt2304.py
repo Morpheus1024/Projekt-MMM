@@ -3,7 +3,7 @@ from scipy import signal
 import numpy as np
 from numpy import exp as exp
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Slider, Button
+from matplotlib.widgets import Slider, Button, RadioButtons
 
 # import sympy
 
@@ -31,7 +31,7 @@ class Uklad:
 
     def __init__(self, lista_IN):
         # lista_IN = wektor_wejścia #[R, L, R2, C, U]
-
+        self.IN = None
         self.R = lista_IN[0]
         self.L = lista_IN[1]
         self.R2 = lista_IN[2]
@@ -49,62 +49,63 @@ class Uklad:
         self.biegun = -(self.R + self.R2) / (self.R * self.R2 * self.C)
         return self.biegun
 
+    def wybor_IN(self, label,time, A, w):
+        t = np.arange(0, time, dt)  # start, stop, step
+        IN1 = A * signal.square(w * t) #prostokatny
+        IN2 = A * signal.sawtooth(w * t, 0.5)  # 0,5 daje trójkątny, 1 dawało by piłokształtny
+        IN3 = A * np.sin(w*t)
+
+        wybor = {'sygnał prostokątny':IN1, 'sygnał trójkątny':IN2, 'sygnał harmoniczy':IN3}
+        self.IN = wybor[label] 
+
+    def radio(self):
+        rax = plt.axes([0.01, 0.6, 0.3, 0.2])
+        #pltradio = plt.subplot(221)
+        wybor_sygnalu = RadioButtons(rax, ('sygnał prostokątny', 'sygnał trójkątny', 'sygnał harmoniczy'))
+        plt.draw()
+        wybor_sygnalu.on_clicked(wybor_IN)
+
+
     def bode(self):
         self.sys = signal.TransferFunction([self.R], [self.R * self.R2 * self.C, self.R + self.R2])
         w, mag, phase = signal.bode(self.sys)
         plt.suptitle('Uklad') #glowna nazwa
-        plt1 = plt.subplot(221) #subplotem tworzymy mniejsze miejsca na wykres - liczba 2 2 1 oznacza kolejno 2 rzedy, 2 kolumny i ktora kolumna ma byc na ten wykres przeznaczona
+        plt1 = plt.subplot(232) #subplotem tworzymy mniejsze miejsca na wykres - liczba 2 2 1 oznacza kolejno 2 rzedy, 2 kolumny i ktora kolumna ma byc na ten wykres przeznaczona
         plt1.set_title('Phase')
         #plt1.tick_params('x', labelbottom=False) #nie podpisuje osi ox
         plt.semilogx(w, phase)  # Bode phase plot
-        plt2 = plt.subplot(223)
+        plt2 = plt.subplot(233)
         plt2.set_title('Magnitude')
         plt.semilogx(w, mag)  # Bode magnitude plot
         plt.tight_layout()
 
-        #plt1 = plt.subplot2grid((4, 4), (0, 0), colspan=2, rowspan=2)
-        #plt1.plot(data=plt.semilogx(w, phase), marker='o')
-        #plt1.set_title('Phase')
-        #plt1.tick_params('x', labelbottom=False)
-
-        #plt2 = plt.subplot2grid((4, 4), (2, 0), colspan=2, rowspan=2)
-        #plt2.plot(data=plt.semilogx(w, mag), marker='o')
-        #plt2.set_title('Magnitude')
 
 
     def sygnal(self, time, A, w, dt):
         t = np.arange(0, time, dt)  # start, stop, step
         # plt.plot(t, signal.square(w*t))
         # plt.figure()
-        IN1 = A * signal.square(w * t) #prostokatny
-        IN2 = A * signal.sawtooth(w * t, 0.5)  # 0,5 daje trójkątny, 1 dawało by piłokształtny
-        IN3 = A * np.sin(w*t)
-        IN = IN3
-        plt3 = plt.subplot(222)
-        plt.plot(t, IN) #tutaj zrobimy zmiane ktorego IN wybieramy
+        plt3 = plt.subplot(235)
+        plt.plot(t, self.IN) #tutaj zrobimy zmiane ktorego IN wybieramy
         plt3.set_title('IN') #nazwa
         plt.tight_layout() #to oddala od siebie wykresy zeby nic na siebie nie nachodzilo
 
         ##tutaj niech będą ify decydujace o wyjściu
         
-        return IN
-        #sygnal wsadzilem do jednej def z tego wzgledu ze nie robimy 3 razy tych samych rzeczy tylko raz, wywolywanie bedzie polegalo na zmianie
-        #ktorego wejscia chcemy uzyc wiec w sumie podobnie ale szybciej mysle
-        #jedynym problemem teraz jest umieszczenie buttonow i suwakow poniewaz to co wtedy bylo wykorzystuje troche inne metody ktore codziennie
-        #rozgryzam w mniejszy lub wiekszy sposob
-
-        #plt3 = plt.subplot2grid((4, 4), (0, 2), colspan=2, rowspan=2)
-        #plt3.plot(data=plt.semilogx(w, w), marker='o')
-        #plt3.set_title('IN')
-        #plt.tight_layout()
-
-        #return IN1
+       # return IN
     
+        
+    
+
+   
+        
+    
+
     def wyjscie(self, time, IN, dt):
         t = np.arange(0, time, dt)
         oryginal_transmitancji = self.R*exp(-(t*(self.R + self.R2))/(self.C*self.R*self.R2))/(self.R + self.R2) - self.R/(self.R + self.R2)
         OUT = np.convolve(IN,oryginal_transmitancji)
-        plt4 = plt.subplot(224)
+        plt4 = plt.subplot(236)
         plt.plot(0)
         plt4.set_title('OUT')
         plt.tight_layout() 
@@ -119,6 +120,8 @@ dt = 0.25
 A = 2
 w = 1
 uklad = Uklad(RLC)
+
+uklad.radio()
 
 uklad.bode()
 IN = uklad.sygnal(time, A, w, dt) 
