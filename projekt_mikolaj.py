@@ -3,7 +3,7 @@ from scipy import signal
 import numpy as np
 from numpy import exp as exp
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Slider, Button
+from matplotlib.widgets import Slider, Button, RadioButtons
 
 '''
 todo
@@ -43,21 +43,25 @@ class Uklad:
         self.sys = signal.TransferFunction([self.R], [self.R * self.R2 * self.C, self.R + self.R2])
         w, mag, phase = signal.bode(self.sys)
         plt.suptitle('Uklad') 
-        plt1 = plt.subplot(221) 
+        plt1 = plt.subplot(232) 
         plt1.set_title('Phase')
         plt.semilogx(w, phase)  
-        plt2 = plt.subplot(223)
+        plt2 = plt.subplot(235)
         plt2.set_title('Magnitude')
         plt.semilogx(w, mag) 
         plt.tight_layout()
 
     def sygnal(self, time, A, w, dt):
+        # left, bottom, width, height values
+        rax = plt.axes([0.02, 0.65, 0.28, 0.18])
+        radio_button = RadioButtons(rax, ('Syg. Prostokątny','Syg. Trójkątny','Syg. harmoniczny'))
+
         t = np.arange(0, time, dt)  
         IN1 = A * signal.square(w * t) 
         IN2 = A * signal.sawtooth(w * t, 0.5)  
         IN3 = A * np.sin(w*t)
         IN = IN1
-        plt3 = plt.subplot(222)
+        plt3 = plt.subplot(233)
         plt.plot(t, IN) 
         plt3.set_title('IN') 
         plt.tight_layout()
@@ -68,7 +72,7 @@ class Uklad:
         t = np.arange(0, time, dt)
         oryginal_transmitancji = self.R*exp(-(t*(self.R + self.R2))/(self.C*self.R*self.R2))/(self.R + self.R2) - self.R/(self.R + self.R2)
         OUT = np.convolve(IN,oryginal_transmitancji)
-        plt4 = plt.subplot(224)
+        plt4 = plt.subplot(236)
         plt.plot(OUT)
         plt4.set_title('OUT')
         plt.tight_layout() 
