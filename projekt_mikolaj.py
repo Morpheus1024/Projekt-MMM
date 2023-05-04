@@ -69,9 +69,7 @@ class Uklad:
         # left, bottom, width, height values
         
 
-        rax = plt.axes([0.02, 0.65, 0.28, 0.18])
-        radio_button = RadioButtons(rax, ('Syg. Prostokątny','Syg. Trójkątny','Syg. harmoniczny'))
-
+        
         t = np.arange(0, time, dt)  
         IN1 = A * signal.square(w * t) 
         IN2 = A * signal.sawtooth(w * t, 0.5)  
