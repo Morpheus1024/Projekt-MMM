@@ -1,11 +1,12 @@
 from cgitb import reset
-import button as button
+
 from scipy import signal
 import numpy as np
 from numpy import exp as exp, ndarray
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Slider, Button
+from matplotlib.widgets import Slider
 from matplotlib.widgets import RadioButtons
+from matplotlib.widgets import Button as Button
 
 
 R, L, R2, C, U = 10, 1, 15, 20, 1
