@@ -1,12 +1,9 @@
-from cgitb import reset
-
 from scipy import signal
 import numpy as np
 from numpy import exp as exp, ndarray
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Slider
+from matplotlib.widgets import Slider, Button
 from matplotlib.widgets import RadioButtons
-from matplotlib.widgets import Button as Button
 
 
 R, L, R2, C, U = 10, 1, 15, 20, 1
@@ -37,18 +34,18 @@ axs[1, 0].set_xlabel('Mag')
 
 
 IN = IN1
-
-
 def mnozenie(IN_X, A_X):
-    return IN_X * A_X
+    IN = IN_X * A_X
+    return IN
 
 
 line3 = axs[0, 1].plot(t, mnozenie(IN, A))
 axs[0, 1].set_xlabel('IN')
 
 
-OUT = mnozenie(IN, A) * ((R * exp(-(t * (R + R2)) / (C * R * R2))) / (R + R2) - R / (R + R2))
-line4 = axs[1, 1].plot(t, OUT)
+oryginal_transmitancji = R * exp(-(t * (R + R2)) / (C * R * R2)) / (R + R2) - R / (R + R2)
+OUT = np.convolve(IN, oryginal_transmitancji)
+line4 = axs[1, 1].plot(OUT)
 axs[1, 1].set_xlabel('OUT')
 
 
@@ -66,10 +63,10 @@ amp_slider = Slider(
 
 def update(val):
     axs[0, 1].clear()
-    axs[1, 1].clear()
     line3 = axs[0, 1].plot(t, mnozenie(IN, amp_slider.val))
-    OUT = mnozenie(IN, amp_slider.val) * ((R * exp(-(t * (R + R2)) / (C * R * R2))) / (R + R2) - R / (R + R2))
-    line4 = axs[1, 1].plot(t, OUT)
+    axs[1, 1].clear()
+    line4 = axs[1, 1].plot(np.convolve(mnozenie(IN, amp_slider.val), oryginal_transmitancji))
+
 
 
 amp_slider.on_changed(update)
@@ -78,12 +75,13 @@ amp_slider.on_changed(update)
 resetax = fig.add_axes([0.8, 0.025, 0.1, 0.04])
 button = Button(resetax, 'Reset', hovercolor='0.975')
 
+plot = fig.add_axes([0.6, 0.025, 0.1, 0.04])
+button_plot = Button(plot, 'Plot', hovercolor='0.975')
 
 def reset(event):
     amp_slider.reset()
 
 
 button.on_clicked(reset)
-
 
 plt.show()
