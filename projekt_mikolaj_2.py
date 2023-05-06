@@ -99,7 +99,7 @@ def change_L(txt_input):
 L_textbox.on_submit(change_L)
 
 def change_A(txt_input):
-    A.set_ydata(txt_input)
+    A =txt_input
 
 A_textbox.on_submit(change_A)
 
