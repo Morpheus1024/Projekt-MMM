@@ -44,7 +44,7 @@ axs[0, 1].set_xlabel('IN')
 
 oryginal_transmitancji = R * exp(-(t * (R + R2)) / (C * R * R2)) / (R + R2) - R / (R + R2)
 OUT = np.convolve(IN, oryginal_transmitancji)
-line4 = axs[1, 1].plot(t, OUT)
+line4 = axs[1, 1]plot(t, OUT)
 axs[1, 1].set_xlabel('OUT')
 
 
