@@ -21,15 +21,15 @@ from matplotlib.widgets import Button as Button
 
 #rysowanie jak wszystko jest na początku
 
-R = 0
-L = 0
-R2 = 0
-C = 0
-A = 0
-w = 0
-time = 0
-dt = 0
-IN_choise=0
+R = 1
+L = 1
+R2 = 1
+C = 1
+A = 1
+w = 1
+time = 10
+dt = 0.1
+IN = 1
 
 rax = plt.axes([0.02, 0.65, 0.28, 0.18])
 radio_button = RadioButtons(rax, ('Syg. Prostokątny','Syg. Trójkątny','Syg. harmoniczny'))
@@ -79,56 +79,69 @@ plt_OUT.set_title('Output')
 plt.show()
 
 def change_R(txt_input):
-    R.set_ydata(txt_input)
+    R.eval(txt_input)
+    plot()
 
 R_textbox.on_submit(change_R)
 
 def change_C(txt_input):
-    C.set_ydata(txt_input)
+    C.eval(txt_input)
+    plot()
 
 C_textbox.on_submit(change_C)
 
 def change_R2(txt_input):
-    R2.set_ydata(txt_input)
+    R2.eval(txt_input)
+    plot()
 
 R2_textbox.on_submit(change_R2)
 
 def change_L(txt_input):
-    L.set_ydata(txt_input)
+    L.eval(txt_input)
+    plot()
 
 L_textbox.on_submit(change_L)
 
 def change_A(txt_input):
-    A =txt_input
+    A.eval(txt_input)
+    plot()
 
 A_textbox.on_submit(change_A)
 
 def change_w(txt_input):
-    w.set_ydata(txt_input)
+    w.eval(txt_input)
+    plot()
 
 w_textbox.on_submit(change_w)
 
 def change_dt(txt_input):
-    dt.set_ydata(txt_input)
+    dt.eval(txt_input)
+    plot()
 
 dt_textbox.on_submit(change_dt)
 
 def change_time(txt_input):
-    time.set_ydata(txt_input)
+    time.eval(txt_input)
+    plot()
 
 time_textbox.on_submit(change_time)
 
 def IN_choise(txt_input):
-    IN_choise={'Syg. Prostokątny':1, 'Syg. Trójkątny':2,'Syg. harmoniczny':3}
+    t=np.arange(0,time,dt)
+    IN1 = A* signal.square(w*t)
+    IN2 = A* signal.sawtooth(w * t, 0.5)
+    IN3 = A* np.sin(w * t)
+    IN={'Syg. Prostokątny':IN1, 'Syg. Trójkątny':IN2,'Syg. harmoniczny':IN3}
+    plot()
 
 radio_button.on_clicked(IN_choise)
 
 
 def plot(event):
-    t=np.arange(0,time,dt)
-    if IN_choise==1: IN = signal.square(w * t)
-    elif IN_choise==2: IN=signal.sawtooth(w * t, 0.5)
-    elif IN_choise==3: IN=np.sin(w * t)
+    #t=np.arange(0,time,dt)
+    #if IN_choise==1: IN = signal.square(w * t)
+    #elif IN_choise==2: IN=signal.sawtooth(w * t, 0.5)
+    #elif IN_choise==3: IN=np.sin(w * t)
 
     sys=signal.TransferFunction([R], [R * R2 * C, R + R2])
     w, mag, phase = signal.bode(sys)
