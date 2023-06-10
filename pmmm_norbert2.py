@@ -96,11 +96,11 @@ def f_OUT(w, amp, R, time, dt, C, R2, f):
     t = np.arange(0, time, dt)
     oryginal_transmitancji = R * exp(-(t * (R + R2)) / -(C * R * R2)) / (R + R2) - R / (R + R2)
     if f == 1:
-        line4 = axs[1, 1].plot(np.convolve(f_IN1(amp, w, time, dt), oryginal_transmitancji))
+        line4 = axs[1, 1].plot(t/dt,np.convolve(f_IN1(amp, w, time, dt), oryginal_transmitancji))
     elif f == 2:
-        line4 = axs[1, 1].plot(np.convolve(f_IN2(amp, w, time, dt), oryginal_transmitancji))
+        line4 = axs[1, 1].plot(t/dt,np.convolve(f_IN2(amp, w, time, dt), oryginal_transmitancji))
     else:
-        line4 = axs[1, 1].plot(np.convolve(f_IN3(amp, w, time, dt), oryginal_transmitancji))
+        line4 = axs[1, 1].plot(t/dt,np.convolve(f_IN3(amp, w, time, dt), oryginal_transmitancji))
 
 def rysowanie_bode(R, R2, C):
 
