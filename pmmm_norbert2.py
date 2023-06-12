@@ -94,7 +94,7 @@ def f_OUT(w, amp, R, time, dt, C, R2, f):
     C = float(C)
 
     t = np.arange(0, time, dt)
-    oryginal_transmitancji = R * exp(-(t * (R + R2)) / -(C * R * R2)) / (R + R2) - R / (R + R2)
+    oryginal_transmitancji = -exp((t*(R + R2))/(C*R*R2))/(C*R2)
     if f == 1:
         line4 = axs[1, 1].plot(t/dt,np.convolve(f_IN1(amp, w, time, dt), oryginal_transmitancji))
     elif f == 2:
