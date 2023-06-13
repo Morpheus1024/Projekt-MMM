@@ -59,8 +59,8 @@ def wart_time(val):
     wartosci_IN[1] = eval(val)
     rysowanie_plotow1()
 
-def wart_dt(val):
-    wartosci_IN[2] = eval(val)
+def wart_dt(val): #w milisekundach
+    wartosci_IN[2] = eval(val/1000)
     rysowanie_plotow1()
 
 def wart_w(val):
@@ -71,16 +71,16 @@ def wart_R(val):
     wartosci_BODE[0] = eval(val)
     rysowanie_plotow1()
 
-def wart_L(val):
-    wartosci_BODE[1] = eval(val)
+def wart_L(val): # w microhenrach
+    wartosci_BODE[1] = eval(val/1000000)
     rysowanie_plotow1()
 
 def wart_R2(val):
     wartosci_BODE[2] = eval(val)
     rysowanie_plotow1()
 
-def wart_C(val):
-    wartosci_BODE[3] = eval(val)
+def wart_C(val): # w microfaradach
+    wartosci_BODE[3] = eval(val/1000000)
     rysowanie_plotow1()
 
 def f_OUT(w, amp, R, time, dt, C, R2, f):
@@ -96,11 +96,11 @@ def f_OUT(w, amp, R, time, dt, C, R2, f):
     t = np.arange(0, time, dt)
     oryginal_transmitancji = -exp((t*(R + R2))/(C*R*R2))/(C*R2)
     if f == 1:
-        line4 = axs[1, 1].plot(t/dt,np.convolve(f_IN1(amp, w, time, dt), oryginal_transmitancji))
+        line4 = axs[1, 1].plot(np.convolve(f_IN1(amp, w, time, dt), oryginal_transmitancji))
     elif f == 2:
-        line4 = axs[1, 1].plot(t/dt,np.convolve(f_IN2(amp, w, time, dt), oryginal_transmitancji))
+        line4 = axs[1, 1].plot(np.convolve(f_IN2(amp, w, time, dt), oryginal_transmitancji))
     else:
-        line4 = axs[1, 1].plot(t/dt,np.convolve(f_IN3(amp, w, time, dt), oryginal_transmitancji))
+        line4 = axs[1, 1].plot(np.convolve(f_IN3(amp, w, time, dt), oryginal_transmitancji))
 
 def rysowanie_bode(R, R2, C):
 
@@ -112,7 +112,7 @@ def rysowanie_bode(R, R2, C):
     line1 = axs[0, 0].semilogx(w1, phase)
     line2 = axs[1, 0].semilogx(w1, mag)
 
-def rysowanie_plotow1(f=None):
+def rysowanie_plotow1(f):
     print('po raz drugi', wartosci_IN)
     amp = wartosci_IN[0]
     time = wartosci_IN[1]
@@ -150,43 +150,50 @@ fig, axs = plt.subplots(2, 2)
 fig.subplots_adjust(left=0.3, bottom=0.2)
 
 axs[0, 0].set_ylabel('Phase')
-axs[0, 1].set_ylabel('IN')
-axs[1, 0].set_xlabel('Mag')
-axs[1, 1].set_xlabel('OUT')
+axs[0, 0].set_xlabel('f')
+
+axs[0, 1].set_ylabel('U_IN [V]')
+axs[0, 1].set_xlabel('t [s]')
+
+axs[1, 0].set_ylabel('Mag')
+axs[1, 0].set_xlabel('f')
+
+axs[1, 1].set_ylabel('U_OUT [V]')
+axs[1, 1].set_xlabel('t [s]')
 
 wartosci_BODE = [10, 15, 1, 20]
-wartosci_IN = [2, 100, 0.1, 1]
+wartosci_IN = [2, 100, 100, 1]
 
-axbox = fig.add_axes([0.13, 0.02, 0.15, 0.075])
-amp_box = TextBox(axbox, "amplitude", textalignment="center")
+axbox = fig.add_axes([0.07, 0.02, 0.15, 0.075])
+amp_box = TextBox(axbox, "A [V]", textalignment="center")
 amp_box.set_val(wartosci_IN[0])
 
-timeax = fig.add_axes([0.35, 0.02, 0.15, 0.075])
-time_box = TextBox(timeax, "time", textalignment="center")
+timeax = fig.add_axes([0.32, 0.02, 0.15, 0.075])
+time_box = TextBox(timeax, "time [s]", textalignment="center")
 time_box.set_val(wartosci_IN[1])
 
-dtax = fig.add_axes([0.55, 0.02, 0.15, 0.075])
-dt_box = TextBox(dtax, "dt", textalignment="center")
+dtax = fig.add_axes([0.57, 0.02, 0.15, 0.075])
+dt_box = TextBox(dtax, "dt [ms]", textalignment="center")
 dt_box.set_val(wartosci_IN[2])
 
-wax = fig.add_axes([0.75, 0.02, 0.15, 0.075])
-w_box = TextBox(wax, "w", textalignment="center")
+wax = fig.add_axes([0.80, 0.02, 0.15, 0.075])
+w_box = TextBox(wax, "ω [Hz]", textalignment="center")
 w_box.set_val(wartosci_IN[3])
 
-Rax = fig.add_axes([0.05, 0.3, 0.15, 0.075])
-R_box = TextBox(Rax, "R", textalignment="center")
+Rax = fig.add_axes([0.08, 0.3, 0.15, 0.075])
+R_box = TextBox(Rax, "R [Ω]", textalignment="center")
 R_box.set_val(wartosci_BODE[0])
 
-R2ax = fig.add_axes([0.05, 0.5, 0.15, 0.075])
-R2_box = TextBox(R2ax, "R2", textalignment="center")
+R2ax = fig.add_axes([0.08, 0.5, 0.15, 0.075])
+R2_box = TextBox(R2ax, "R2 [Ω]", textalignment="center")
 R2_box.set_val(wartosci_BODE[1])
 
-Lax = fig.add_axes([0.05, 0.4, 0.15, 0.075])
-L_box = TextBox(Lax, "L", textalignment="center")
+Lax = fig.add_axes([0.08, 0.4, 0.15, 0.075])
+L_box = TextBox(Lax, "L [uH]", textalignment="center")
 L_box.set_val(wartosci_BODE[2])
 
-Cax = fig.add_axes([0.05, 0.2, 0.15, 0.075])
-C_box = TextBox(Cax, "C", textalignment="center")
+Cax = fig.add_axes([0.08, 0.2, 0.15, 0.075])
+C_box = TextBox(Cax, "C [uF]", textalignment="center")
 C_box.set_val(wartosci_BODE[3])
 
 IN1_butt_box=fig.add_axes([0.03, 0.65, 0.18, 0.05])
