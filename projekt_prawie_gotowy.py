@@ -107,6 +107,18 @@ def f_OUT(w, A, R, time, dt, C, R2, f):
 
     axs[0, 1].clear()
 
+    axs[0, 0].set_ylabel('Phase')
+    axs[0, 0].set_xlabel('f')
+
+    axs[0, 1].set_ylabel('U_IN [V]')
+    axs[0, 1].set_xlabel('t [s]')
+
+    axs[1, 0].set_ylabel('Mag')
+    axs[1, 0].set_xlabel('f')
+
+    axs[1, 1].set_ylabel('U_OUT [V]')
+    axs[1, 1].set_xlabel('t [s]')
+
     if f == 1:
         print('1')
         f_IN1(A, w, time, dt)
