@@ -39,6 +39,7 @@ def f_sys(R, R2, C):
     w1, mag, phase = signal.bode(sys)
     return w1, mag, phase
 
+
 axs[0, 0].set_ylabel('Phase')
 axs[0, 0].set_xlabel('f')
 
@@ -63,8 +64,8 @@ def wart_time(val):
     wartosci_IN[1] = eval(val)
 
 
-def wart_dt(val):
-    wartosci_IN[2] = eval(val)
+def wart_dt(val): #milisekundy
+    wartosci_IN[2] = eval(val/1000)
 
 
 def wart_w(val):
@@ -75,15 +76,15 @@ def wart_R(val):
     wartosci_BODE[0] = eval(val)
 
 
-def wart_L(val):
-    wartosci_BODE[1] = eval(val)
+def wart_L(val): #mikrohenry
+    wartosci_BODE[1] = eval(val/1000000)
 
 def wart_R2(val):
     wartosci_BODE[2] = eval(val)
 
 
-def wart_C(val):
-    wartosci_BODE[3] = eval(val)
+def wart_C(val): #mikrofarad
+    wartosci_BODE[3] = eval(val/1000000)
 
 def on_IN1_button_clicked(event):
     rysowanie_plotow1(1)
