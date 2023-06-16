@@ -102,7 +102,7 @@ def on_IN3_button_clicked(event):
 
 
 def f_OUT(w, A, R, time, dt, C, R2, f):
-    t = np.arange(0, time, dt)
+    t = np.arange(0, time, dt, dtype=np.float128)
     oryginal_transmitancji = -exp((t * (R + R2)) / (C * R * R2)) / (C * R2)
 
     axs[0, 1].clear()
@@ -128,15 +128,19 @@ def rysowanie_plotow1(f):
     time = wartosci_IN[1]
     dt = wartosci_IN[2]
     w = wartosci_IN[3]
-    R = wartosci_BODE[0]
-    L = wartosci_BODE[1]
-    R2 = wartosci_BODE[2]
-    C = wartosci_BODE[3]
+    R = wartosci_BODE[0]*1000
+    L = wartosci_BODE[1]/1000
+    R2 = wartosci_BODE[2]*1000
+    C = wartosci_BODE[3]/1000
     print('wart w funk', wartosci_IN)
     axs[0, 0].clear()
     axs[1, 0].clear()
     axs[1, 1].clear()
     axs[0, 1].clear()
+
+    rysowanie_bode(R, R2, C)
+    f_OUT(w, A, R, time, dt, C, R2, f)
+
 
     axs[0, 0].set_ylabel('Phase')
     axs[0, 0].set_xlabel('f')
@@ -149,13 +153,6 @@ def rysowanie_plotow1(f):
 
     axs[1, 1].set_ylabel('U_OUT [V]')
     axs[1, 1].set_xlabel('t [s]')
-
-    rysowanie_bode(R, R2, C)
-    f_OUT(w, A, R, time, dt, C, R2, f)
-
-
-   
-
     plt.show()
 
 
