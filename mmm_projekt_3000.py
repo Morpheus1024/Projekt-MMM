@@ -126,19 +126,33 @@ def rysowanie_bode(R, R2, C):
 def rysowanie_plotow1(f):
     A = wartosci_IN[0]
     time = wartosci_IN[1]
-    dt = wartosci_IN[2]
+    dt = wartosci_IN[2]/1000
     w = wartosci_IN[3]
-    R = wartosci_BODE[0]
-    L = wartosci_BODE[1]
-    R2 = wartosci_BODE[2]
-    C = wartosci_BODE[3]
+    R = wartosci_BODE[0]*1000
+    L = wartosci_BODE[1]/1000
+    R2 = wartosci_BODE[2]*1000
+    C = wartosci_BODE[3]/1000
     print('wart w funk', wartosci_IN)
     axs[0, 0].clear()
     axs[1, 0].clear()
     axs[1, 1].clear()
     axs[0, 1].clear()
+
     rysowanie_bode(R, R2, C)
     f_OUT(w, A, R, time, dt, C, R2, f)
+
+
+    axs[0, 0].set_ylabel('Phase')
+    axs[0, 0].set_xlabel('f')
+
+    axs[0, 1].set_ylabel('U_IN [V]')
+    axs[0, 1].set_xlabel('t [s]')
+
+    axs[1, 0].set_ylabel('Mag')
+    axs[1, 0].set_xlabel('f')
+
+    axs[1, 1].set_ylabel('U_OUT [V]')
+    axs[1, 1].set_xlabel('t [s]')
     plt.show()
 
 
@@ -163,22 +177,22 @@ w_box.set_val(1)  # Trigger `submit` with the initial string.
 w_box.on_submit(lambda val: wart_w(val))
 
 Rax = fig.add_axes([0.07, 0.15, 0.10, 0.075])
-R_box = TextBox(Rax, "R [Ω]", textalignment="center")
+R_box = TextBox(Rax, "R [kΩ]", textalignment="center")
 R_box.set_val(10)  # Trigger `submit` with the initial string.
 R_box.on_submit(lambda val: wart_R(val))
 
 R2ax = fig.add_axes([0.32, 0.15, 0.10, 0.075])
-R2_box = TextBox(R2ax, "R2 [Ω]", textalignment="center")
+R2_box = TextBox(R2ax, "R2 [kΩ]", textalignment="center")
 R2_box.set_val(15)  # Trigger `submit` with the initial string.
 R2_box.on_submit(lambda val: wart_R2(val))
 
 Lax = fig.add_axes([0.57, 0.15, 0.10, 0.075])
-L_box = TextBox(Lax, "L [uH]", textalignment="center")
+L_box = TextBox(Lax, "L [mH]", textalignment="center")
 L_box.set_val(1)  # Trigger `submit` with the initial string.
 L_box.on_submit(lambda val: wart_L(val))
 
 Cax = fig.add_axes([0.80, 0.15, 0.10, 0.075])
-C_box = TextBox(Cax, "C [uF]", textalignment="center")
+C_box = TextBox(Cax, "C [mF]", textalignment="center")
 C_box.set_val(20)  # Trigger `submit` with the initial string.
 C_box.on_submit(lambda val: wart_C(val))
 
