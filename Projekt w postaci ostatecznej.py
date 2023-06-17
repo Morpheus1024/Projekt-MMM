@@ -5,7 +5,7 @@ from numpy import exp as exp
 import matplotlib.pyplot as plt
 from matplotlib.widgets import TextBox, Button
 
-
+#sygnał prostokątny
 def f_IN1(A, w, time, dt):
     t = np.arange(0, time, dt)
     w = np.array(w)
@@ -13,7 +13,7 @@ def f_IN1(A, w, time, dt):
     line3 = axs[0, 1].plot(t, IN1)
     return IN1
 
-
+#sygnał trójkątny
 def f_IN2(A, w, time, dt):
     t = np.arange(0, time, dt)
     w = np.array(w)
@@ -21,7 +21,7 @@ def f_IN2(A, w, time, dt):
     line3 = axs[0, 1].plot(t, IN2)
     return IN2
 
-
+#sygnał harmoniczny
 def f_IN3(A, w, time, dt):
     t = np.arange(0, time, dt)
     w = np.array(w)
@@ -33,7 +33,7 @@ def f_IN3(A, w, time, dt):
 fig, axs = plt.subplots(2, 2)
 fig.subplots_adjust(left=0.08, bottom=0.30, right=0.98, top=0.99, wspace=0.25, hspace=0.25)
 
-
+#obliczenia dla charakterystyk Bodego
 def f_sys(R, R2, C):
     sys = signal.TransferFunction([R], [R * R2 * C, R + R2])
     w1, mag, phase = signal.bode(sys)
@@ -110,13 +110,13 @@ def f_OUT(w, A, R, time, dt, C, R2, f):
     axs[0, 1].clear()
     axs[1, 1].clear()
 
-    if f == 1:
+    if f == 1: #sygnał prostokątny
         line4 = axs[1, 1].plot(t, scipy.signal.convolve(oryginal_transmitancji, f_IN1(A, w, time, dt), mode='same', method='auto'))
 
-    elif f == 2:
+    elif f == 2: #sygnał trójkątny
         line4 = axs[1, 1].plot(t, scipy.signal.convolve(oryginal_transmitancji, f_IN2(A, w, time, dt), mode='same',method='auto'))
 
-    else:
+    else: #sygnał harmoniczny
         line4 = axs[1, 1].plot(t, scipy.signal.convolve(oryginal_transmitancji, f_IN3(A, w, time, dt), mode='same',method='auto'))
 
 def rysowanie_bode(R, R2, C):
