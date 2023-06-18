@@ -31,6 +31,7 @@ def f_IN3(A, w, time, dt):
 
 
 fig, axs = plt.subplots(2, 2)
+plt.figure(num='Projekt MMM - Zadanie 15')
 fig.subplots_adjust(left=0.08, bottom=0.30, right=0.98, top=0.99, wspace=0.25, hspace=0.25)
 
 #obliczenia dla charakterystyk Bodego
@@ -54,8 +55,7 @@ axs[1, 1].set_xlabel('t [s]')
 
 wartosci_BODE = [10, 1, 15, 20]
 wartosci_IN = [2, 100, 0.1, 1]
-print('Wektor związany z sygnałem:', wartosci_IN)
-print('Wektor związany z parametrami układu:', wartosci_BODE)
+
 
 
 def wart_A(val):
@@ -134,7 +134,8 @@ def rysowanie_plotow1(f):
     L = wartosci_BODE[1]/1000
     R2 = wartosci_BODE[2]*1000
     C = wartosci_BODE[3]/1000
-    print('wart w funk', wartosci_IN)
+    print('Wektor związany z sygnałem:', wartosci_IN)
+    print('Wektor związany z parametrami układu:', wartosci_BODE)    
     axs[0, 0].clear()
     axs[1, 0].clear()
     axs[1, 1].clear()
