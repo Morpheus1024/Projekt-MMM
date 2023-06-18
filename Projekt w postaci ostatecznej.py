@@ -30,8 +30,7 @@ def f_IN3(A, w, time, dt):
     return IN3
 
 
-fig, axs = plt.subplots(2, 2)
-plt.figure(num='Projekt MMM - Zadanie 15')
+fig, axs = plt.subplots(2, 2, num = 'Projekt MMM - Zadanie 15')
 fig.subplots_adjust(left=0.08, bottom=0.30, right=0.98, top=0.99, wspace=0.25, hspace=0.25)
 
 #obliczenia dla charakterystyk Bodego
